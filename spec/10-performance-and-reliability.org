@@ -34,4 +34,3 @@
 * Reliability
 - Defensive programming around missing or partial provider data.
 - Comprehensive ERT suite; see [[file:12-testing-and-ci.org][Testing and CI]].
-55aa11

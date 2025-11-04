@@ -29,4 +29,3 @@
 * Accessibility
 - Ensure all actions are reachable without mouse.
 - Maintain legible contrast across dark and light themes (see [[file:07-icons-and-styles.org#faces][Faces]]).
-cc77dd

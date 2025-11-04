@@ -55,4 +55,3 @@ Sections must support stable identity comparison across minor edits. Providers s
 
 * Errors and partial data
 Providers may return partial Sections (missing tooltip/signature); the Renderer must handle absent fields gracefully. Fallback to lower-tier providers if data is unusable or stale.
-0ddf00

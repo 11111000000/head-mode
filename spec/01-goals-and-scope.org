@@ -40,4 +40,3 @@ For terminology, see [[file:15-glossary.org][Glossary]].
 - Requires Emacs 29+ (treesit); fallbacks in place.
 - Optional dependencies allowed (all-the-icons, pos-tip, dash, f).
 - Coexists with other header-line providers (composition supported); see [[file:11-compatibility-and-degradation.org#composition][Composition]].
-a1b2c3

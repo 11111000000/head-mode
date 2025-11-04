@@ -27,4 +27,3 @@
 
 * Documentation tests
 - Validate examples in README and user guide snippets to avoid rot (tangle or literate tests if applicable).
-0a0a0a

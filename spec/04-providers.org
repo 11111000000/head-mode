@@ -39,4 +39,3 @@ By default, only declarative entities are shown (e.g., namespace/class/function/
 - Global priority is configurable; buffer-local override selects a specific provider.
 - Providers must declare a readiness predicate (e.g., LSP attached, treesit grammar available).
 - Composition with external header-line sources is handled separately; see [[file:11-compatibility-and-degradation.org#composition][Composition]].
-abc123

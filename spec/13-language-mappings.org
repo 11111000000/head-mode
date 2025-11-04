@@ -89,4 +89,3 @@ Note: Only declarative entities are mapped by default. Control-flow blocks are o
 Extensibility
 - Language maps are user-extendable via head-mode-language-kind-map (see [[file:08-configuration-and-profiles.org][Configuration]]).
 - Providers must respect user overrides when resolving node types.
-beef42

@@ -38,4 +38,3 @@
 * Documentation
 - User guide with profiles and configuration examples.
 - Developer guide for adding providers and language mappings (references back to [[file:05-data-model.org][Data Model]] and [[file:04-providers.org][Providers]]).
-a55a55

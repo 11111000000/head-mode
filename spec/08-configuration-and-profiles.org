@@ -47,4 +47,3 @@ Registration APIs:
 - head-mode-register-kind-face
 
 For actions and keybindings, see [[file:09-interactions-and-menus.org][Interactions and Menus]].
-12ab34

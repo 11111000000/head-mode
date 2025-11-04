@@ -23,4 +23,3 @@
 - Emacs Manual: header-line-format, faces, keymaps.
 - LSP: documentSymbol specification (Language Server Protocol).
 - tree-sitter grammars: per-language node types and fields.
-deadbe

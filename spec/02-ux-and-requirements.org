@@ -34,4 +34,3 @@ For the data contract of sections, see [[file:05-data-model.org#section-object][
 * Error Handling
 - Soft failures with clear fallbacks (e.g., if LSP symbols are unavailable, auto-fallback to treesit).
 - No blocking network or language-server calls in UI thread; see [[file:10-performance-and-reliability.org#async][Asynchrony]].
-d4e5f6

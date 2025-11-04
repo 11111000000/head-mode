@@ -44,4 +44,3 @@ Per-window state stores last displayed string, last path, measured widths, activ
 * Error and Failure Modes
 - Provider timeouts and stale caches degrade to lower-priority providers.
 - Graceful handling of missing icons and unknown kinds; see [[file:07-icons-and-styles.org#fallbacks][Icon fallbacks]].
-babe01

@@ -33,9 +33,9 @@ Index
 - [[file:13-language-mappings.org][13 Language Mappings]]
 - [[file:14-roadmap-and-risks.org][14 Roadmap and Risks]]
 - [[file:15-glossary.org][15 Glossary]]
-
+- [[file:16-coding-style.org][16 Coding Style and Conventions]]
+  
 Conventions
 - Cross-references use Org links to canonical sections (e.g., [[file:05-data-model.org#section-object][Section object]]).
 - Configuration variable and function names are presented as symbols for clarity; actual implementation details are out of scope for this document.
 - This spec targets Emacs 29+ and assumes availability of treesit; see [[file:11-compatibility-and-degradation.org][Compatibility and Degradation]] for fallbacks.
-c0ffee

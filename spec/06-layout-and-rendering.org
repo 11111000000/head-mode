@@ -42,4 +42,3 @@
 * Error handling in rendering
 - Missing icons: use fallback text markers; see [[file:07-icons-and-styles.org#icon-fallbacks][Icon fallbacks]].
 - Missing tooltips: omit help-echo gracefully.
-cafe00

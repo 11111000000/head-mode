@@ -59,4 +59,3 @@ Faces should inherit from header-line faces and adapt well to light/dark themes.
 * Accessibility
 - Ensure sufficient contrast for active/hover states.
 - Provide a no-icons profile for maximum clarity; see [[file:08-configuration-and-profiles.org#profiles][Profiles]].
-faded0

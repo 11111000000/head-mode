@@ -1,0 +1,164 @@
+#+title: 16 Coding Style and Conventions
+
+* Purpose and Scope
+This chapter defines coding standards for the Emacs Lisp implementation of head-mode to ensure MELPA/ELPA readiness, long-term maintainability, and a predominantly functional style. It complements the design in:
+- Architecture: [[file:03-architecture.org][03 Architecture]]
+- Data model and contracts: [[file:05-data-model.org][05 Data Model]]
+- Public API and configuration: [[file:08-configuration-and-profiles.org#public-api][Public API]]
+
+This document avoids restating behavior that is already specified elsewhere and focuses on source layout, naming, purity, side effects, and compliance.
+
+* Baseline and Compliance
+- Emacs version: 29+ (treesit available); see [[file:11-compatibility-and-degradation.org][Compatibility and Degradation]].
+- Headers and packaging:
+  - Every .el file must include lexical-binding, Package-Requires, Version, Keywords, and URL in headers.
+  - Provide a meaningful Commentary section and end-of-file footer.
+  - No side effects at load time (e.g., no global minor-mode enable).
+- Linting and compilation:
+  - package-lint clean.
+  - checkdoc clean (docstrings with initial one-sentence summary).
+  - Byte-compilation: no warnings in CI; use (eval-when-compile ...) for compile-time deps.
+- Autoloads:
+  - Public interactive entry points and defcustoms must have ;;;###autoload cookies.
+  - Avoid autoloading heavy modules; load on demand via features and autoloaded stubs.
+- Versioning:
+  - SemVer for user-visible API; deprecations follow define-obsolete-function-alias/variable with version tags.
+
+* Functional Style Principles
+- Lexical scope: all files begin with -*- lexical-binding: t; -*-.
+- Purity by default:
+  - Prefer referentially transparent functions: inputs → outputs, no observable mutation.
+  - Represent state as values; update via functions that return new state; see [[file:05-data-model.org#state-model][State model]].
+- Side effects restricted to boundaries:
+  - Rendering (header-line-format assignment), user interaction (messages, prompts), and integration hooks.
+  - No side effects during require/load aside from feature provisioning.
+- Immutability-first:
+  - Avoid destructive operations; use functional seq/map APIs and copying helpers (copy-sequence, copy-tree) when needed.
+  - Internal caches may use targeted mutation for performance, but must remain encapsulated and observationally pure to callers.
+- Avoid global mutable state:
+  - Use per-window/buffer state objects passed through APIs; do not setq global variables in hot paths.
+  - Configuration via defcustom; do not rewrite user options at runtime.
+- Minimal macros:
+  - Prefer functions over macros; use macros only for performance-critical inline patterns or code generation.
+  - Keep macros private and documented with expansion constraints.
+
+* Module and Naming Conventions
+- Prefixes:
+  - Public commands/options/APIs: head-mode-*
+  - Internal functions/vars: head--*
+  - Subsystem namespaces (files/features): head-core, head-layout, head-render, head-icons, head-providers, etc.
+  - Providers: head-provider-<source> (e.g., head-provider-lsp, head-provider-treesit, head-provider-org).
+- Features and files:
+  - Each file provides a unique feature symbol matching its basename.
+  - Require only what is necessary; avoid cyclic requires.
+- Symbols:
+  - Constants: head--CONST-NAME (defconst).
+  - Customization groups: (defgroup head-mode ...).
+  - Hooks: head-mode-<topic>-hook (document value shape).
+  - Conditions (errors): define-condition head-mode-error (error) ...; use typed signals.
+
+* API Surface and Documentation
+- Public API is defined in [[file:08-configuration-and-profiles.org#public-api][Public API]]; do not export additional interactive entry points without updating the spec.
+- Docstrings:
+  - First sentence is a standalone summary.
+  - Interactive commands document key behavior, return values, side effects, and user options considered.
+  - Functions that are intended to be pure should explicitly document “Side effects: none” and input/output contracts.
+- Internal helpers:
+  - Name with head-- and document pre/post-conditions succinctly.
+  - Avoid exposing internal structs or mutable data structures directly.
+
+* File Headers and Footers (Template)
+- Header (example):
+  - ;;; head-core.el --- Core engine for head-mode -*- lexical-binding: t; -*-
+  - ;; Package-Requires: ((emacs "29.1"))
+  - ;; Version: 0.1.0
+  - ;; Keywords: convenience, tools
+  - ;; URL: https://example.org/head-mode
+- Sections:
+  - Commentary: purpose, references to spec files (no long duplication).
+  - Code: implementation with (provide 'head-core) and required deps.
+- Footer:
+  - ;;; head-core.el ends here
+
+* Dependencies and Libraries
+- Standard libraries encouraged: cl-lib, seq, map, subr-x, project.
+- Optional dependencies are permitted but must be soft:
+  - all-the-icons (icons), pos-tip (tooltips), dash, f.
+  - Gate optional features with featurep and defcustom; core must not require them at load time.
+- cl-lib usage:
+  - Prefer functional constructs (cl-map, cl-remove-if-not) over imperative cl-loop where reasonable.
+  - cl-loop acceptable for performance-critical code if readability is preserved and docstrings clarify invariants.
+
+* Error Handling and Logging
+- Errors:
+  - User-facing issues: signal with user-error.
+  - Internal invariants: signal with (signal 'head-mode-error (DATA)); no generic error strings.
+  - Avoid throwing UI-blocking errors; prefer soft fallbacks per [[file:10-performance-and-reliability.org#async][Asynchrony]] and [[file:11-compatibility-and-degradation.org][Compatibility]].
+- Assertions and checks:
+  - Use cl-assert only under a debug flag; do not assert in hot paths in production.
+- Logging:
+  - Provide head--log macro (cheap predicate) and verbosity levels; disabled by default.
+  - Logging must not allocate excessively in hot paths (guard string formatting).
+
+* Performance Practices
+- Hot paths:
+  - Avoid consing in post-command-hook; reuse strings/markers where safe.
+  - Cache widths and rendered segments; see [[file:10-performance-and-reliability.org][Performance and Reliability]].
+- Inlining:
+  - defsubst small predicates used in tight loops; document their contracts.
+- Measurements:
+  - Default to string-width; pixel-precision optional and gated in GUI; cache results.
+- Asynchrony:
+  - Never block on LSP or filesystem; use callbacks/promises and update only on material changes.
+
+* Rendering and Side Effects
+- Rendering boundaries:
+  - The only permissible side effect in the pipeline is applying the computed header-line-format; guard reassignments by equality checks.
+- Propertization:
+  - Use text properties for faces, help-echo, and keymaps as per [[file:06-layout-and-rendering.org#rendering][Rendering]].
+- TTY/remote:
+  - Respect tty-friendly profiles and icon fallbacks; no GUI-only APIs without guards.
+
+* Providers and Extensibility
+- Provider contract compliance:
+  - See [[file:05-data-model.org#provider-contract][Provider contract]]; do not introduce side-channel state.
+  - Providers must be stateless or explicitly manage buffer-local state within init/dispose.
+- Registration:
+  - head-mode-register-provider enforces naming and capability checks; do not mutate provider tables at runtime outside registration APIs.
+- Hooks:
+  - Prefer hooks to advice; advice-add is discouraged and must be localized and justified in comments if used.
+
+* Testing Conventions
+- ERT:
+  - Test names: head-test-<module>-<behavior>.
+  - Use with-temp-buffer and temporary windows; no global state leakage between tests.
+  - Snapshot tests for rendering are allowed under deterministic conditions; see [[file:12-testing-and-ci.org][Testing and CI]].
+- Fixtures:
+  - Create synthetic treesit/LSP fixtures; avoid network or external servers in tests.
+- Performance tests:
+  - Keep under a separate selector; non-blocking in default CI runs unless explicitly enabled.
+
+* Formatting and Style
+- Indentation: follow Emacs Lisp conventions; no tabs in source; keep lines < 100 columns where possible.
+- Whitespace:
+  - No trailing whitespace; newline at EOF.
+- Symbols and faces:
+  - Faces and kinds must be registered via the public APIs in [[file:08-configuration-and-profiles.org#public-api][Public API]]; do not hardcode theme assumptions.
+- Strings and text:
+  - Use format with %S/%s appropriately; avoid concatenation in hot paths.
+  - Internationalization: docstrings and messages in English.
+
+* Deprecation and Compatibility
+- Mark deprecated APIs with define-obsolete-function-alias/define-obsolete-variable-alias including the version and replacement.
+- Maintain backward compatibility shims within one minor release window unless the spec mandates a breaking change with major bump.
+
+* Security and Safety
+- Do not eval untrusted content; avoid constructing keymaps or properties from unsanitized external data.
+- Respect read-only buffers and remote safety; see [[file:11-compatibility-and-degradation.org][Compatibility and Degradation]].
+
+* Checklist Before Merge
+- Lint: package-lint and checkdoc clean.
+- Byte-compile: no warnings.
+- Tests: ERT passes on GUI and -nw; snapshot tests stable.
+- Docs: Updated relevant spec sections and user-facing docs if API changed.
+- Changelog: Entry added with impact summary and migration notes if applicable.

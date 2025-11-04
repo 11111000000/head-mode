@@ -42,4 +42,3 @@ Menu population is driven by hooks and Section metadata; providers may annotate 
 * Accessibility
 - All actions available via keyboard.
 - Echo-area tooltip fallback in TTY (see [[file:11-compatibility-and-degradation.org][Compatibility]]).
-9876aa
