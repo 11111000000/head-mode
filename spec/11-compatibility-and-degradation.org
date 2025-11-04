@@ -1,0 +1,32 @@
+#+title: 11 Compatibility and Degradation
+
+* Platforms and Emacs versions
+- Emacs 29+ (treesit).
+- GUI and TTY supported.
+- TRAMP and daemon modes supported with graceful degradation.
+
+* Degradation modes
+- TTY: Text-only icon theme; echo-area tooltips.
+- Missing fonts: Force text-only icons.
+- Remote/TRAMP: Avoid heavy operations; simpler profile defaults.
+
+* Coexistence and composition
+:PROPERTIES:
+:CUSTOM_ID: composition
+:END:
+- head-mode coexists with other header-line producers.
+- Provide a composition switcher (e.g., head-mode-toggle-composition) to select the active header-line source or to combine segments safely.
+- When composing, ensure deterministic ordering and respect third-party faces.
+
+* Provider presence
+- If LSP not attached or delayed, treesit takes precedence automatically.
+- If treesit grammar unavailable, use imenu/which-function fallbacks.
+
+* Theming and faces
+- Default faces inherit from standard header-line faces to integrate with popular themes.
+- Users can override faces and icon themes.
+
+* Accessibility
+- Ensure all actions are reachable without mouse.
+- Maintain legible contrast across dark and light themes (see [[file:07-icons-and-styles.org#faces][Faces]]).
+cc77dd

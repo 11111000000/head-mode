@@ -1,0 +1,26 @@
+#+title: 15 Glossary
+
+* Terms
+- Section: A single breadcrumb unit rendered in the header-line; see [[file:05-data-model.org#section-object][Section object]].
+- Kind (semantic kind): Canonical category of a Section (e.g., class, function); see [[file:07-icons-and-styles.org#semantic-kinds][Semantic kinds]].
+- Provider: Component that computes the current path at point; see [[file:05-data-model.org#provider-contract][Provider contract]] and [[file:04-providers.org][Providers]].
+- Layout: Process of arranging Sections within width constraints; see [[file:06-layout-and-rendering.org#layout-rules][Layout rules]].
+- Renderer: Component that produces header-line-format from laid-out Sections; see [[file:06-layout-and-rendering.org#rendering][Rendering]].
+- Icon Theme Service: Maps kinds/icon-ids to glyphs or text; see [[file:07-icons-and-styles.org#icon-theme-service][Icon Theme Service]].
+- Profile: Named configuration bundle; see [[file:08-configuration-and-profiles.org#profiles][Profiles]].
+- LSP document symbols: Hierarchical symbol information provided by language servers.
+- treesit: Emacs 29+ tree-sitter integration.
+- Org outline path: Hierarchical chain of headings to the current point.
+- Composition: Strategy to coexist with other header-line producers; see [[file:11-compatibility-and-degradation.org#composition][Composition]].
+
+* Abbreviations
+- FQN: Fully Qualified Name.
+- TTY: Text terminal mode (-nw).
+- CI: Continuous Integration.
+- TRAMP: Transparent Remote Access, Multiple Protocols.
+
+* References
+- Emacs Manual: header-line-format, faces, keymaps.
+- LSP: documentSymbol specification (Language Server Protocol).
+- tree-sitter grammars: per-language node types and fields.
+deadbe

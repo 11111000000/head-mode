@@ -1,0 +1,42 @@
+#+title: 04 Providers
+
+* Overview
+Providers compute the semantic path at point. The system selects the first available provider by priority:
+1) LSP/Eglot
+2) treesit
+3) imenu/which-function
+Org uses a dedicated provider.
+
+For the provider interface, see [[file:05-data-model.org#provider-contract][Provider contract]].
+
+* LSP/Eglot provider
+- Source: documentSymbol (and related APIs) from lsp-mode or Eglot.
+- Data model: Build an interval tree of symbols; resolve path from point to root.
+- Capabilities: :rename t if supported; may include signatures, modifiers, and docstring excerpts.
+- Asynchrony: Non-blocking symbol refresh; cache invalidation on server updates.
+- Failure: On timeouts or missing symbols, degrade to treesit.
+
+* Treesit provider
+- Source: treesit-node-at point; ascend to meaningful ancestors.
+- Mapping: node-type → semantic kind; see [[file:13-language-mappings.org][Language Mappings]].
+- Names: Prefer standard child nodes (identifier/name); use language-specific heuristics where needed.
+- Performance: Avoid recomputing the entire tree; cache ancestors for the current point node identity.
+
+* imenu/which-function fallback
+- imenu: Use categories and trees where available to derive a hierarchy.
+- which-function: Provide top-level function or symbol as a minimal path.
+- Limitations: Lower fidelity; provided as fallback only.
+
+* Org provider
+- Outline path: org-get-outline-path for headings.
+- Enrichment: org-element for TODO/priority/tags; include in tooltip and optionally in the section label.
+- Src blocks: Add an extra Section "SRC lang" when in org-src-block. If editing in an indirect buffer, show code context as available from other providers, but Org context remains primary.
+
+* Inclusion policy
+By default, only declarative entities are shown (e.g., namespace/class/function/method). Control-flow blocks (if/for/while/try/switch) are optional and off by default; see profiles in [[file:08-configuration-and-profiles.org#profiles][Profiles]].
+
+* Provider selection and overrides
+- Global priority is configurable; buffer-local override selects a specific provider.
+- Providers must declare a readiness predicate (e.g., LSP attached, treesit grammar available).
+- Composition with external header-line sources is handled separately; see [[file:11-compatibility-and-degradation.org#composition][Composition]].
+abc123

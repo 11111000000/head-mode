@@ -1,0 +1,30 @@
+#+title: 12 Testing and CI
+
+* Test strategy
+- ERT unit tests for:
+  - Providers: path extraction (with fixtures for LSP symbols and treesit ASTs).
+  - Layout: truncation, tail preservation, width measurement.
+  - Rendering: properties (faces, keymaps, tooltips) and TTY variants.
+  - Fallbacks and composition logic.
+
+* Fixtures
+- Synthetic buffers for popular languages with minimal reproducible structures.
+- Org files with headings, TODOs, priorities, tags, and src blocks.
+
+* Benchmarks
+- Cursor movement across typical and large files.
+- Provider change scenarios (e.g., attaching/detaching LSP).
+- TRAMP latency scenarios (simulated).
+
+* CI matrix
+- Linux, macOS, Windows.
+- GUI and -nw (TTY) runs where applicable.
+- Byte-compilation and package-lint.
+
+* Regression protection
+- Snapshot-based header-line rendering tests under deterministic conditions.
+- Performance thresholds enforced in CI (soft fail warnings escalating to hard fails when regressions persist).
+
+* Documentation tests
+- Validate examples in README and user guide snippets to avoid rot (tangle or literate tests if applicable).
+0a0a0a

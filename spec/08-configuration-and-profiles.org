@@ -1,0 +1,50 @@
+#+title: 08 Configuration and Profiles
+
+* Configuration variables
+Core options (names indicative):
+- head-mode-providers-priority: Ordered list of providers; see [[file:04-providers.org][Providers]].
+- head-mode-language-kind-map: Per-language node-type → kind; see [[file:13-language-mappings.org][Language Mappings]].
+- head-mode-separator: Default "→" (TTY fallback ">").
+- head-mode-use-icons: t/nil to enable icons.
+- head-mode-icon-theme: Theme selector (nerd-font, all-the-icons, text).
+- head-mode-tty-friendly: Force TTY-friendly output.
+- head-mode-tail-keep: Integer N (default 2).
+- head-mode-ellipsis-policy: 'middle' by default.
+- head-mode-max-width-percent: Width budget relative to window.
+- head-mode-include-control-blocks: Show control-flow kinds when non-nil.
+- head-mode-show-file-section: Whether to render the file/project section.
+- head-mode-project-root-function: Resolver for project roots.
+- head-mode-tooltip-backend: 'help-echo or 'pos-tip.
+- head-mode-lsp-timeout: Timeout for LSP symbol fetch.
+- head-mode-composition-source: Header-line composition strategy; see [[file:11-compatibility-and-degradation.org#composition][Composition]].
+
+* Profiles
+:PROPERTIES:
+:CUSTOM_ID: profiles
+:END:
+- minimal: file + last 1–2 segments, no icons, ASCII separators, no control-flow blocks.
+- full: file + full path with middle ellipsis, icons enabled, keep tail N=2, no control-flow (toggleable).
+- tty-friendly: minimal-like with text-only icons and strict width.
+Profiles can override any variable above.
+
+* Public API
+:PROPERTIES:
+:CUSTOM_ID: public-api
+:END:
+User-facing commands (indicative names):
+- head-mode-enable, head-mode-disable, head-mode-toggle
+- head-mode-refresh
+- head-mode-select-profile
+- head-mode-toggle-icons
+- head-mode-toggle-separator
+- head-mode-toggle-composition
+- head-mode-jump-up, head-mode-next-section, head-mode-previous-section, head-mode-jump-select
+- head-mode-copy-breadcrumbs, head-mode-copy-fqn
+
+Registration APIs:
+- head-mode-register-provider
+- head-mode-register-icon-theme
+- head-mode-register-kind-face
+
+For actions and keybindings, see [[file:09-interactions-and-menus.org][Interactions and Menus]].
+12ab34

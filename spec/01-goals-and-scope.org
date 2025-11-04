@@ -1,0 +1,43 @@
+#+title: 01 Goals and Scope
+
+* Purpose
+head-mode renders the current structural path of the point in a buffer into the header-line. It aims to:
+- Show hierarchical context for Org files (heading path).
+- Show hierarchical code context using semantic sources (prefer LSP, then treesit, then imenu/which-function).
+- Update instantly as point moves without perceptible jitter.
+- Provide clickable sections with tooltips and icons.
+- Remain modular, extensible, and easy to configure.
+
+For terminology, see [[file:15-glossary.org][Glossary]].
+
+* In-Scope
+- Header-line breadcrumbs for Org and programming buffers.
+- Semantic path computation via pluggable providers; see [[file:04-providers.org][Providers]].
+- Rendering pipeline with adaptive truncation; see [[file:06-layout-and-rendering.org][Layout and Rendering]].
+- Icon themes and faces; see [[file:07-icons-and-styles.org][Icons and Styles]].
+- Interactions (mouse/keyboard) and context menus; see [[file:09-interactions-and-menus.org][Interactions and Menus]].
+- Performance budgets and caching; see [[file:10-performance-and-reliability.org][Performance and Reliability]].
+- Compatibility fallbacks and TTY support; see [[file:11-compatibility-and-degradation.org][Compatibility and Degradation]].
+- Tests and CI; see [[file:12-testing-and-ci.org][Testing and CI]].
+
+* Out-of-Scope (Non-Goals)
+- Replacing modeline functionality beyond header-line breadcrumbs.
+- Acting as a project manager or code outline buffer.
+- Providing full LSP features; LSP is used as a data source only.
+- Maintaining complete parity across all languages out of the box (mappings are incremental; see [[file:13-language-mappings.org][Language Mappings]]).
+
+* Stakeholders and Users
+- Developers working across multiple languages.
+- Org users navigating complex hierarchies.
+- TTY and TRAMP users requiring graceful degradation.
+
+* Success Criteria
+- Perceived instantaneous updates (< 2 ms typical) with no stutter.
+- Accurate semantic path with highest-quality source available.
+- Minimal configuration needed for common setups, strong extensibility for advanced users.
+
+* Constraints and Assumptions
+- Requires Emacs 29+ (treesit); fallbacks in place.
+- Optional dependencies allowed (all-the-icons, pos-tip, dash, f).
+- Coexists with other header-line providers (composition supported); see [[file:11-compatibility-and-degradation.org#composition][Composition]].
+a1b2c3

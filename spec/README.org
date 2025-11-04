@@ -1,0 +1,41 @@
+#+title: head-mode Specification
+#+author: Project Team
+#+startup: overview
+#+options: toc:2 num:nil
+#+property: header-args :eval never
+
+This repository contains the formal specification for head-mode, an Emacs minor mode that renders a contextual breadcrumb header for buffers. The spec is split across multiple focused Org files. Each topic is defined once and referenced elsewhere to avoid duplication.
+
+How to read this spec
+- Start with Goals and Scope for a high-level overview.
+- Continue with UX and Requirements for behavior and constraints.
+- Architecture explains the moving parts and how they fit together.
+- Consult Data Model for the canonical definitions (Section object, Provider API, State).
+- Providers, Layout and Rendering, Icons and Styles, Configuration and Profiles, and Interactions and Menus detail key subsystems.
+- Performance and Reliability, Compatibility and Degradation, Testing and CI cover cross-cutting qualities.
+- Language Mappings contains initial treesit mappings.
+- Roadmap and Risks outlines release stages and mitigations.
+- Glossary defines terms used across the spec.
+
+Index
+- [[file:01-goals-and-scope.org][01 Goals and Scope]]
+- [[file:02-ux-and-requirements.org][02 UX and Requirements]]
+- [[file:03-architecture.org][03 Architecture]]
+- [[file:05-data-model.org][05 Data Model]]
+- [[file:04-providers.org][04 Providers]]
+- [[file:06-layout-and-rendering.org][06 Layout and Rendering]]
+- [[file:07-icons-and-styles.org][07 Icons and Styles]]
+- [[file:08-configuration-and-profiles.org][08 Configuration and Profiles]]
+- [[file:09-interactions-and-menus.org][09 Interactions and Menus]]
+- [[file:10-performance-and-reliability.org][10 Performance and Reliability]]
+- [[file:11-compatibility-and-degradation.org][11 Compatibility and Degradation]]
+- [[file:12-testing-and-ci.org][12 Testing and CI]]
+- [[file:13-language-mappings.org][13 Language Mappings]]
+- [[file:14-roadmap-and-risks.org][14 Roadmap and Risks]]
+- [[file:15-glossary.org][15 Glossary]]
+
+Conventions
+- Cross-references use Org links to canonical sections (e.g., [[file:05-data-model.org#section-object][Section object]]).
+- Configuration variable and function names are presented as symbols for clarity; actual implementation details are out of scope for this document.
+- This spec targets Emacs 29+ and assumes availability of treesit; see [[file:11-compatibility-and-degradation.org][Compatibility and Degradation]] for fallbacks.
+c0ffee

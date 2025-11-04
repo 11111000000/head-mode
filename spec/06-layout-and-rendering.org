@@ -1,0 +1,45 @@
+#+title: 06 Layout and Rendering
+
+* Layout rules
+:PROPERTIES:
+:CUSTOM_ID: layout-rules
+:END:
+- Width-aware arrangement of sections with a configurable maximum width (absolute or percent of window).
+- Preserve the last N tail segments intact (default N=2).
+- Middle-ellipsis truncation for long labels (e.g., "VeryLong…Suffix").
+- Early truncation or folding of low-priority segments first (based on Section priority; see [[file:05-data-model.org#section-object][Section]]).
+- Configurable separator (default "→"; TTY fallback ">").
+
+* Measurement
+- Use string-width as the default width metric.
+- Optionally use pixel-precision in GUI for finer measurements if needed.
+- Cache per-segment width to minimize repeated computations.
+
+* Rendering
+:PROPERTIES:
+:CUSTOM_ID: rendering
+:END:
+- Compose header-line-format with propertized strings:
+  - Faces for kinds and states (hover/active); see [[file:07-icons-and-styles.org#faces][Faces]].
+  - help-echo for tooltips (pos-tip optionally).
+  - mouse-face for hover feedback.
+  - local keymaps for click actions (mouse-1 jump, mouse-3 context).
+- Avoid reassigning header-line if the generated object is equal to the previous output.
+- Maintain TTY-friendly output using ASCII icons and echo-area tooltip fallbacks.
+
+* Ellipsis policy
+- Middle-ellipsis by default for labels exceeding target width.
+- Ellipsis face is distinct to ensure consistent appearance; see [[file:07-icons-and-styles.org#faces][Faces]].
+
+* File/Project section
+- Leftmost "file/project" section shows project-relative path + filename, subject to the same layout rules.
+- Project root is configurable (project.el or function hook).
+
+* Org-specific display
+- Display TODO keyword in the section if configured; full details in tooltip.
+- org-src-block indicated by an extra "SRC lang" section preceding code breadcrumbs.
+
+* Error handling in rendering
+- Missing icons: use fallback text markers; see [[file:07-icons-and-styles.org#icon-fallbacks][Icon fallbacks]].
+- Missing tooltips: omit help-echo gracefully.
+cafe00

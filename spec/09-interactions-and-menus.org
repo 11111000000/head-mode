@@ -1,0 +1,45 @@
+#+title: 09 Interactions and Menus
+
+* Mouse interactions
+- mouse-1: Jump to the Section marker.
+- mouse-3: Open context menu; see [[#context-menu][Context menu]].
+- Hover: mouse-face highlight; help-echo tooltip (pos-tip optional).
+
+Actions are attached per Section as described in [[file:05-data-model.org#actions][Actions and keymaps]].
+
+* Keybindings
+:PROPERTIES:
+:CUSTOM_ID: keybindings
+:END:
+Default prefix: C-c h
+- u: Move up one level (jump to parent Section).
+- n/p: Move to next/previous Section (cycle focus).
+- j: Select a Section from a completion list and jump.
+- i: Toggle icons on/off.
+- s: Cycle separators.
+- p: Select profile (see [[file:08-configuration-and-profiles.org#profiles][Profiles]]).
+- o: Toggle inclusion of control-flow blocks.
+- f: Toggle file/project section visibility.
+- c: Copy breadcrumb path (prompt: short/fully-qualified).
+- r: LSP rename current symbol (if capability present).
+- m: Open context menu for the focused Section.
+
+* Context menu
+:PROPERTIES:
+:CUSTOM_ID: context-menu
+:END:
+Default items (context-sensitive, extensible via hooks):
+- Jump to parent.
+- Open this Section in other window.
+- Copy breadcrumbs (short/full).
+- Copy fully-qualified name.
+- Rename symbol via LSP (if available).
+- Narrow to this scope (defun/subtree).
+- Show in imenu/consult-imenu.
+
+Menu population is driven by hooks and Section metadata; providers may annotate Sections with capabilities (see [[file:05-data-model.org#provider-contract][Provider contract]]).
+
+* Accessibility
+- All actions available via keyboard.
+- Echo-area tooltip fallback in TTY (see [[file:11-compatibility-and-degradation.org][Compatibility]]).
+9876aa

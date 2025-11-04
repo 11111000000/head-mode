@@ -1,0 +1,62 @@
+#+title: 07 Icons and Styles
+
+* Icon Theme Service
+:PROPERTIES:
+:CUSTOM_ID: icon-theme-service
+:END:
+- Maps icon-id and kind to visual glyphs.
+- Supports multiple themes:
+  - nerd-font/codicons (default).
+  - all-the-icons (optional).
+  - Text-only fallback theme (TTY-friendly).
+- Lookup order: explicit icon-id → kind default → fallback text.
+
+* Semantic kinds
+:PROPERTIES:
+:CUSTOM_ID: semantic-kinds
+:END:
+Canonical kinds used across the system:
+- project, file
+- module, namespace, package
+- class, struct, interface, trait, enum
+- method, function, constructor, destructor
+- property, field, constant
+- type, alias, generic, impl
+- test, spec, case
+- block, if, for, while, switch, try (optional)
+- org-heading-level-1 … org-heading-level-6
+- org-src-block
+
+Language-specific mappings from node types to these kinds are defined in [[file:13-language-mappings.org][Language Mappings]].
+
+* Icon fallbacks
+:PROPERTIES:
+:CUSTOM_ID: icon-fallbacks
+:END:
+- If a glyph is unavailable, fall back to a short textual marker:
+  - ns, mod, pkg, cls, str, ifc, trt, enm, m, fn, CTOR, DTOR, prop, fld, const, type, alias, impl, test, H1…H6, SRC.
+- For TTY or unknown fonts, force text theme.
+
+* Faces
+:PROPERTIES:
+:CUSTOM_ID: faces
+:END:
+Define faces to style output consistently:
+- head-mode-project, head-mode-file
+- head-mode-separator
+- head-mode-section, head-mode-section-active
+- head-mode-icon
+- head-mode-ellipsis
+- head-mode-org-todo
+- head-mode-org-h1 … head-mode-org-h6
+
+Faces should inherit from header-line faces and adapt well to light/dark themes. Color choices must remain subtle and readable.
+
+* Theming rules
+- Themes may override per-kind defaults and per-face attributes.
+- Users can select an icon theme and customize faces to match their color scheme.
+
+* Accessibility
+- Ensure sufficient contrast for active/hover states.
+- Provide a no-icons profile for maximum clarity; see [[file:08-configuration-and-profiles.org#profiles][Profiles]].
+faded0

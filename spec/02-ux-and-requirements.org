@@ -1,0 +1,37 @@
+#+title: 02 UX and Requirements
+
+* UX Overview
+- Leftmost file/project section (project-relative path + filename).
+- Breadcrumb sections for current semantic context.
+- Configurable separator (default "→"; TTY fallback ">").
+- Middle ellipsis truncation for long labels; keep last N=2 tail segments intact.
+- Tooltips: Org shows full headline with TODO/priority/tags; code shows type + full name (signature/modifiers/docstring if cheaply available).
+- Sections are clickable, keyboard navigable; see [[file:09-interactions-and-menus.org][Interactions and Menus]].
+
+* Functional Requirements
+- Real-time updates on point motion with change guards.
+- Provider priority: LSP/Eglot → treesit → imenu/which-function (Org uses its own provider).
+- Breadcrumb sections map to semantic kinds; icons align with kinds; see [[file:07-icons-and-styles.org#semantic-kinds][Semantic kinds]].
+- Context-aware context menu; see [[file:09-interactions-and-menus.org#context-menu][Context menu]].
+- Org src blocks: show an extra section indicating SRC lang.
+
+For the data contract of sections, see [[file:05-data-model.org#section-object][Section object]].
+
+* Non-Functional Requirements
+- Performance budgets and caching strategies: see [[file:10-performance-and-reliability.org][Performance and Reliability]].
+- TTY/remote-friendly design and fallbacks: see [[file:11-compatibility-and-degradation.org][Compatibility and Degradation]].
+- Extensibility for new languages/providers/themes: see [[file:04-providers.org][Providers]] and [[file:07-icons-and-styles.org][Icons and Styles]].
+
+* Accessibility
+- Keyboard parity for all actions (C-c h prefix).
+- Non-blocking tooltips; echo-area fallback in TTY.
+
+* Configurability
+- Profiles: minimal, full, tty-friendly; see [[file:08-configuration-and-profiles.org#profiles][Profiles]].
+- Inclusion policy for control-flow blocks (off by default).
+- Separator, icon theme, width caps, tail preservation count.
+
+* Error Handling
+- Soft failures with clear fallbacks (e.g., if LSP symbols are unavailable, auto-fallback to treesit).
+- No blocking network or language-server calls in UI thread; see [[file:10-performance-and-reliability.org#async][Asynchrony]].
+d4e5f6

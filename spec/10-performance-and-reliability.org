@@ -1,0 +1,37 @@
+#+title: 10 Performance and Reliability
+
+* Performance budgets
+- Typical update: < 2 ms.
+- Large files: < 10 ms.
+- Avoid GC churn in hot path; reuse objects where feasible.
+
+* Change detection and caching
+- Identity checks: detect when point remains within the same semantic scope.
+- Cache the last path, last output, segment widths.
+- Skip header-line reassignment if output unchanged.
+
+* Event handling
+- Use a cheap guard in post-command-hook.
+- Defer recomputation on after-change-functions (mark dirty, recompute lazily).
+- Debounce relayout on window-size changes.
+
+* Asynchrony
+:PROPERTIES:
+:CUSTOM_ID: async
+:END:
+- Never block UI on LSP responses; update cache asynchronously.
+- Treesit parsing changes trigger lightweight invalidation.
+- Merge async updates without flicker (only update header-line when data materially changes).
+
+* Fallback strategy
+- On provider errors/timeouts, degrade to the next provider.
+- Detect stale data and refresh in the background.
+
+* Large files and remote buffers
+- Enforce simplified profile automatically beyond thresholds (e.g., disable icons and control-flow).
+- TRAMP-safe operations only; see [[file:11-compatibility-and-degradation.org][Compatibility and Degradation]].
+
+* Reliability
+- Defensive programming around missing or partial provider data.
+- Comprehensive ERT suite; see [[file:12-testing-and-ci.org][Testing and CI]].
+55aa11

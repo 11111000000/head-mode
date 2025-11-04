@@ -1,0 +1,47 @@
+#+title: 03 Architecture
+
+* Overview
+The system is composed of a core pipeline and pluggable providers that compute a path of semantic sections for rendering in the header-line. Cross-cutting services handle icons, layout, rendering, and configuration.
+
+* Components
+- Core Engine: event orchestration, change detection, per-window state, pipeline execution.
+- Providers: compute semantic paths from sources (LSP, treesit, imenu/which-function, Org); see [[file:04-providers.org][Providers]].
+- Data Model: defines the Section object, Provider API, and State model; see [[file:05-data-model.org][Data Model]].
+- Layout: width-aware arrangement, truncation, priority rules; see [[file:06-layout-and-rendering.org][Layout and Rendering]].
+- Renderer: propertized strings and header-line-format composition; see [[file:06-layout-and-rendering.org#rendering][Rendering]].
+- Icon Theme Service: icon lookup and fallbacks; see [[file:07-icons-and-styles.org#icon-theme-service][Icon Theme Service]].
+- Configuration: profiles and options; see [[file:08-configuration-and-profiles.org][Configuration and Profiles]].
+
+* Event Flow
+:PROPERTIES:
+:CUSTOM_ID: event-flow
+:END:
+- post-command-hook: cheap guard to detect semantic context changes.
+- after-change-functions: mark dirty state, defer recomputation.
+- window-size-change-functions: trigger relayout.
+- Provider-specific notifications: LSP document symbols updates, treesit parser changes.
+
+* Pipeline
+:PROPERTIES:
+:CUSTOM_ID: pipeline
+:END:
+1) Provider selection by priority and availability.
+2) Path computation → list of [[file:05-data-model.org#section-object][Section]]s.
+3) Layout: truncation and width fitting; see [[file:06-layout-and-rendering.org#layout-rules][Layout rules]].
+4) Rendering: propertized strings with keymaps/tooltips → header-line-format.
+
+* State Management
+Per-window state stores last displayed string, last path, measured widths, active profile, provider cache, and flags. Canonical structure: see [[file:05-data-model.org#state-model][State model]].
+
+* Caching and Guards
+- Node/symbol identity caching to avoid recomputation when point moves within same scope.
+- Memoized width of segments and assembled strings.
+- Equality checks to skip header-line reassignments if output didn’t change.
+
+* Extensibility Points
+- Register providers, icon themes, custom faces, and actions via public registration API; see [[file:08-configuration-and-profiles.org#public-api][Public API]].
+
+* Error and Failure Modes
+- Provider timeouts and stale caches degrade to lower-priority providers.
+- Graceful handling of missing icons and unknown kinds; see [[file:07-icons-and-styles.org#fallbacks][Icon fallbacks]].
+babe01

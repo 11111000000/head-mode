@@ -1,0 +1,41 @@
+#+title: 14 Roadmap and Risks
+
+* Roadmap
+- v0.1 (MVP)
+  - Core pipeline and per-window state.
+  - Providers: Org, treesit (Python, JS/TS, Rust), imenu/which-function fallback.
+  - Basic layout and rendering with icons (nerd-font) and text fallback.
+  - Keyboard interactions (C-c h) and mouse clicks.
+  - Initial tests and CI.
+- v0.2
+  - LSP/Eglot provider with async updates and rename action.
+  - Expanded language mappings (Go, C/C++, Java, Elisp, Ruby, Kotlin).
+  - Context menu and profile switching UI.
+  - Performance tuning and caching improvements.
+- v1.0
+  - Full profiles set (minimal/full/tty-friendly).
+  - Composition with other header-line sources.
+  - Documentation and MELPA/ELPA publishing.
+  - Regression/performance gates in CI.
+
+* Risks
+- Heterogeneous treesit grammars leading to inconsistent names.
+  - Mitigation: robust language maps and user overrides; thorough tests (see [[file:12-testing-and-ci.org][Testing and CI]]).
+- LSP variability across servers (document symbols quality, latency).
+  - Mitigation: timeouts, async cache, graceful fallbacks to treesit.
+- Performance regressions on large/remote files.
+  - Mitigation: guards, simplified profiles, deferred recomputation (see [[file:10-performance-and-reliability.org][Performance]]).
+- Font and icon availability.
+  - Mitigation: text-only icon theme; faces to maintain readability (see [[file:07-icons-and-styles.org][Icons and Styles]]).
+- Conflicts with other header-line producers.
+  - Mitigation: composition switcher and deterministic ordering (see [[file:11-compatibility-and-degradation.org#composition][Composition]]).
+
+* Versioning and Release
+- SemVer for public API stability.
+- Changelog per release with migration notes.
+- Distribution via MELPA/ELPA; tags on GitHub.
+
+* Documentation
+- User guide with profiles and configuration examples.
+- Developer guide for adding providers and language mappings (references back to [[file:05-data-model.org][Data Model]] and [[file:04-providers.org][Providers]]).
+a55a55

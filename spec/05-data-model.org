@@ -1,0 +1,58 @@
+#+title: 05 Data Model
+
+* Section object
+:PROPERTIES:
+:CUSTOM_ID: section-object
+:END:
+A Section represents one breadcrumb unit.
+- id: Stable identifier for diffing and caching (e.g., symbol id or node identity).
+- kind: Semantic kind (see [[file:07-icons-and-styles.org#semantic-kinds][Semantic kinds]]).
+- display-name: Label shown in the header-line (subject to truncation).
+- full-name: Fully qualified name for tooltips and copy actions.
+- marker/position: Jump target.
+- icon-id: Key for icon lookup in the icon theme service.
+- priority: Layout priority for truncation decisions.
+- tooltip: Text for help-echo or pos-tip.
+- props: Additional metadata (e.g., signature, modifiers, visibility range).
+
+Implementation note: This spec defines fields semantically; the concrete representation (alist, plist, or struct) is an implementation detail.
+
+* Provider contract
+:PROPERTIES:
+:CUSTOM_ID: provider-contract
+:END:
+Providers implement:
+- init(buffer): Prepare provider state for a buffer.
+- dispose(buffer): Release resources for a buffer.
+- current-path(buffer, point) → list of Section: Compute the current path.
+- capabilities → plist: e.g., (:signatures t :modifiers t :rename t).
+Registration maps major-mode to provider; buffer-local overrides are permitted. Details on provider types are in [[file:04-providers.org][Providers]].
+
+* State model
+:PROPERTIES:
+:CUSTOM_ID: state-model
+:END:
+Per-window state includes:
+- active-provider: Selected provider for the buffer.
+- last-path: Last computed list of Section objects.
+- last-node/symbol-identity: For fast change detection.
+- last-output: Cached rendered header-line string or vector.
+- width-cache: Measured widths of segments and assembled strings.
+- profile: Current profile; see [[file:08-configuration-and-profiles.org#profiles][Profiles]].
+- dirty-flags: Pending recomputation bits (content/size/theme).
+
+* Actions and keymaps
+:PROPERTIES:
+:CUSTOM_ID: actions
+:END:
+Each Section may define actions consumed by the Renderer:
+- mouse-1: Jump to marker.
+- mouse-3: Open context menu (items resolved as per [[file:09-interactions-and-menus.org#context-menu][Context menu]]).
+- Keyboard navigation is defined globally; see [[file:09-interactions-and-menus.org#keybindings][Keybindings]].
+
+* Identity and equality
+Sections must support stable identity comparison across minor edits. Providers should prefer source-backed ids (e.g., LSP symbol ids, treesit node pointer + range) over heuristic strings.
+
+* Errors and partial data
+Providers may return partial Sections (missing tooltip/signature); the Renderer must handle absent fields gracefully. Fallback to lower-tier providers if data is unusable or stale.
+0ddf00

@@ -1,0 +1,92 @@
+#+title: 13 Language Mappings
+
+This chapter defines initial mappings from treesit node types to canonical semantic kinds. For the list of kinds, see [[file:07-icons-and-styles.org#semantic-kinds][Semantic kinds]]. Providers use these mappings to convert AST nodes into Sections.
+
+Note: Only declarative entities are mapped by default. Control-flow blocks are optional and disabled by default.
+
+* Python
+- module → file
+- class_definition → class
+- function_definition → function (method when within class)
+- decorated_definition → forwarded to its underlying def
+- type_alias? → alias/type (when grammars support)
+- assignment at module scope (constant patterns) → constant (optional)
+
+* JavaScript / TypeScript / TSX
+- program → file/module
+- class_declaration → class
+- function_declaration → function
+- method_definition → method
+- arrow_function/function_expression with named const → function (heuristic)
+- namespace_declaration (TS) → namespace
+- interface_declaration → interface
+- enum_declaration → enum
+- property_signature/field_definition → property/field
+
+* Rust
+- mod_item → module
+- struct_item → struct
+- enum_item → enum
+- trait_item → trait
+- impl_item → impl
+- fn_item → function
+- method_declaration → method
+- type_alias → alias
+- const_item → constant
+
+* Go
+- package_clause → package
+- type_declaration/type_spec → type/struct/interface
+- function_declaration → function
+- method_declaration → method
+- const_declaration → constant
+
+* C / C++
+- namespace_definition → namespace
+- class_specifier/struct_specifier → class/struct
+- function_definition → function
+- constructor_declaration → constructor
+- destructor_declaration → destructor
+- field_declaration → field
+- enum_specifier → enum
+- template_declaration → annotate target with generic
+
+* Java
+- package_declaration → package
+- class_declaration → class
+- interface_declaration → interface
+- enum_declaration → enum
+- method_declaration → method
+- constructor_declaration → constructor
+- field_declaration → field
+
+* Emacs Lisp
+- defun → function
+- defmacro → function (optional special face)
+- cl-defmethod → method
+- cl-defstruct → struct
+- defvar/defconst → field/constant
+
+* Ruby
+- module → namespace
+- class → class
+- method → method
+- constant assignment at top level → constant
+
+* Kotlin
+- package_header → package
+- class/interface/object_declaration → class/interface
+- function_declaration → function
+- property_declaration → property
+
+* Optional control-flow (when enabled)
+- if_statement → if
+- for_statement → for
+- while_statement → while
+- switch_statement → switch
+- try_statement → try
+
+Extensibility
+- Language maps are user-extendable via head-mode-language-kind-map (see [[file:08-configuration-and-profiles.org][Configuration]]).
+- Providers must respect user overrides when resolving node types.
+beef42
